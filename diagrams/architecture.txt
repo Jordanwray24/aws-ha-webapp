@@ -1,0 +1,11 @@
+User
+  |
+Internet
+  |
+Application Load Balancer (Public Subnets)
+  |
+Target Group
+  |
+Auto Scaling Group (Private Subnets)
+  |
+EC2 Instances (Nginx)
