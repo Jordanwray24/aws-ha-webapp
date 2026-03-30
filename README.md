@@ -1,13 +1,3 @@
-Got it — your README is good, it just needs two fixes:
-
-remove the “live services used” stuff that implies it’s running (NAT/ALB, etc. are fine to list, but add “deploy on demand”)
-
-fix the How to Deploy section (it’s missing the correct folder + closing code block)
-
-Also: the backslashes you pasted (\#, \##, \-\) might just be how it copied here, but make sure your actual README has normal Markdown (no leading \).
-
-Here’s a cleaned, resume-ready README you can paste as-is:
-
 # AWS Highly Available Web App (Terraform)
 
 ## Project Overview
