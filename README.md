@@ -8,6 +8,10 @@ The application runs Nginx on EC2 instances in private subnets behind an interne
 ## Architecture
 User → Internet → ALB (Public Subnets) → Target Group → Auto Scaling Group (Private Subnets) → EC2 (Nginx)
 
+## Architecture Diagram
+
+![Architecture Diagram](./architecture.png) 
+
 ## AWS Services Used
 - VPC (public & private subnets across 2 AZs)
 - Internet Gateway + NAT Gateway
