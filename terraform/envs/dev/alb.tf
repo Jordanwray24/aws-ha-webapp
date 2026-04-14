@@ -4,9 +4,12 @@ resource "aws_lb" "app" {
   internal           = false
 
   security_groups = [aws_security_group.alb_sg.id]
-  subnets         = [aws_subnet.public[0].id, aws_subnet.public[1].id]
+  subnets         = aws_subnet.public[*].id
 
-  tags = { Name = "ha-webapp-alb" }
+  tags = merge(local.common_tags, {
+    Name = "ha-webapp-alb"
+    Role = "load-balancer"
+  })
 }
 
 resource "aws_lb_target_group" "app" {
@@ -25,7 +28,10 @@ resource "aws_lb_target_group" "app" {
     unhealthy_threshold = 2
   }
 
-  tags = { Name = "ha-webapp-tg" }
+  tags = merge(local.common_tags, {
+    Name = "ha-webapp-tg"
+    Role = "target-group"
+  })
 }
 
 resource "aws_lb_listener" "http" {

@@ -1,9 +1,9 @@
 resource "aws_autoscaling_group" "app" {
   name                = "ha-webapp-asg"
-  desired_capacity    = 2
-  max_size            = 2
-  min_size            = 2
-  vpc_zone_identifier = [aws_subnet.private[0].id, aws_subnet.private[1].id]
+  desired_capacity    = var.desired_capacity
+  max_size            = var.max_size
+  min_size            = var.min_size
+  vpc_zone_identifier = aws_subnet.private[*].id
 
   health_check_type         = "ELB"
   health_check_grace_period = 120
@@ -18,6 +18,24 @@ resource "aws_autoscaling_group" "app" {
   tag {
     key                 = "Name"
     value               = "ha-webapp-asg-instance"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Environment"
+    value               = var.environment
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Project"
+    value               = var.project_name
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Role"
+    value               = "web"
     propagate_at_launch = true
   }
 }

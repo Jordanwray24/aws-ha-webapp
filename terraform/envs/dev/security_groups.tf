@@ -19,7 +19,10 @@ resource "aws_security_group" "alb_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = { Name = "ha-webapp-alb-sg" }
+  tags = merge(local.common_tags, {
+    Name = "ha-webapp-alb-sg"
+    Role = "alb"
+  })
 }
 
 resource "aws_security_group" "ec2_sg" {
@@ -43,5 +46,8 @@ resource "aws_security_group" "ec2_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = { Name = "ha-webapp-ec2-sg" }
+  tags = merge(local.common_tags, {
+    Name = "ha-webapp-ec2-sg"
+    Role = "web"
+  })
 }

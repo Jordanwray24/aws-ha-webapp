@@ -11,7 +11,7 @@ data "aws_ami" "al2023" {
 resource "aws_launch_template" "app" {
   name_prefix   = "ha-webapp-lt-"
   image_id      = data.aws_ami.al2023.id
-  instance_type = "t3.micro"
+  instance_type = var.instance_type
 
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 
@@ -24,23 +24,24 @@ resource "aws_launch_template" "app" {
 
     HOSTNAME=$(hostname)
     cat > /usr/share/nginx/html/index.html <<HTML
-<html>
-  <head><title>HA WebApp</title></head>
-  <body>
-    <h1>HA WebApp is running!</h1>
-    <p><b>Instance:</b> $${HOSTNAME}</p>
-    <p><b>Env:</b> dev</p>
-    <p><b>Deployed:</b> $(date)</p>
-  </body>
-</html>
-HTML
+    <html>
+      <head><title>HA WebApp</title></head>
+      <body>
+        <h1>HA WebApp is running!</h1>
+        <p><b>Instance:</b> $${HOSTNAME}</p>
+        <p><b>Env:</b> ${var.environment}</p>
+        <p><b>Deployed:</b> $(date)</p>
+      </body>
+    </html>
+    HTML
   EOF
   )
 
   tag_specifications {
     resource_type = "instance"
-    tags = {
-      Name = "ha-webapp-instance"
-    }
+    tags = merge(local.common_tags, {
+      Name = "${var.project_name}-${var.environment}-instance"
+      Role = "web"
+    })
   }
 }
